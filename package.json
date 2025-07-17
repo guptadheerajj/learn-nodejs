@@ -1,0 +1,20 @@
+{
+  "name": "learn-nodejs",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/guptadheerajj/learn-nodejs.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/guptadheerajj/learn-nodejs/issues"
+  },
+  "homepage": "https://github.com/guptadheerajj/learn-nodejs#readme",
+  "description": ""
+}
