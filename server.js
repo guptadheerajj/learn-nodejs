@@ -1,4 +1,9 @@
 const { createServer } = require("node:http");
+const dotenv = require("dotenv");
+const result = dotenv.config({ debug: process.env.DEBUG });
+console.log(result);
+console.log(result.parsed);
+console.log(process.env.NODE_ENV);
 
 const hostname = "127.0.0.1";
 const port = 3000;

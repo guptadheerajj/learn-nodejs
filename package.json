@@ -16,5 +16,8 @@
     "url": "https://github.com/guptadheerajj/learn-nodejs/issues"
   },
   "homepage": "https://github.com/guptadheerajj/learn-nodejs#readme",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "dotenv": "^17.2.0"
+  }
 }
