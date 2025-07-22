@@ -7,10 +7,20 @@ async function getAuthorById(req, res) {
 	const author = await db.getAuthorById(Number(authorId));
 
 	if (!author) {
-		throw new CustomNotFoundError("Author not found");
+		throw new CustomNotFoundError(`Author  with id: ${authorId} not found`);
 	}
 
 	res.send(`Author Name: ${author.name}`);
 }
 
-module.exports = { getAuthorById };
+async function getAllAuthors(req, res) {
+	const allAuthors = await db.getAllAuthors();
+
+	if (!allAuthors) {
+		throw new CustomNotFoundError("Author not found");
+	}
+
+	res.send(allAuthors);
+}
+
+module.exports = { getAuthorById, getAllAuthors };
