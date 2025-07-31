@@ -1,6 +1,6 @@
 // controllers/usersController.js
 const usersStorage = require("../storages/usersStorage");
-const { body, validationResult } = require("express-validator");
+const { body, oneOf, validationResult, query } = require("express-validator");
 
 const alphaErr = "must only contain letters.";
 const lengthErr = "must be between 1 and 10 characters.";
@@ -102,3 +102,57 @@ exports.usersDeletePost = (req, res) => {
 	usersStorage.deleteUser(req.params.id);
 	res.redirect("/");
 };
+
+const validateSearchUser = oneOf(
+	[
+		query("searchFname")
+			.trim()
+			.notEmpty()
+			.withMessage("Please enter first name")
+			.bail()
+			.isAlpha()
+			.withMessage(alphaErr)
+			.isLength({ min: 1, max: 10 }),
+		query("searchEmail")
+			.trim()
+			.notEmpty()
+			.withMessage("Please enter email")
+			.bail()
+			.isEmail()
+			.withMessage("Please enter valid Email"),
+	],
+	{
+		errorType: "grouped",
+		message: "At least one valid field must be provided",
+	}
+);
+
+exports.usersSearchGet = [
+	validateSearchUser,
+	(req, res, next) => {
+		const errors = validationResult(req);
+		console.log("Errors: ", errors.array());
+
+		console.log("After validation:");
+		console.log("searchFname:", `"${req.query.searchFname}"`);
+		console.log("searchEmail:", `"${req.query.searchEmail}"`);
+
+		if (!errors.isEmpty()) {
+			return res.status(400).render("createUser", {
+				title: "create user",
+				errors: errors.array(),
+			});
+		}
+		next();
+	},
+	(req, res, next) => {
+		const { searchFname: fName, searchEmail: email } = req.query;
+		const matchedUsers = usersStorage.searchUser({ fName, email });
+		res.render("search", {
+			title: "search result",
+			matchedUsers,
+			fName,
+			email,
+		});
+	},
+];

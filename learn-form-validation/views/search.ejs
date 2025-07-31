@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+</head>
+
+<body>
+  <h1><%= title %></h1>
+  <% if(locals.matchedUsers.length === 0) { %>
+  <h2>No user was found</h2>
+  <% } else { %>
+  <h2>User(s) found:</h2>
+  <ul>
+    <% locals.matchedUsers.map((user) => { %>
+    <li>
+      <p>Name: <%= user.firstName  %> <%= user.lastName  %></p>
+      <p>Email: <%= user.email %></p>
+      <p>Age: <%= user.age %></p>
+      <p>Bio: <%= user.bio %></p>
+    </li>
+    <%  }) %>
+  </ul>
+  <% } %>
+</body>
+
+</html>
