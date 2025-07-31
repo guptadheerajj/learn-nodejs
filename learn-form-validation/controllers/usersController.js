@@ -1,6 +1,12 @@
 // controllers/usersController.js
 const usersStorage = require("../storages/usersStorage");
-const { body, oneOf, validationResult, query } = require("express-validator");
+const {
+	body,
+	oneOf,
+	validationResult,
+	query,
+	matchedData,
+} = require("express-validator");
 
 const alphaErr = "must only contain letters.";
 const lengthErr = "must be between 1 and 10 characters.";
@@ -131,22 +137,20 @@ exports.usersSearchGet = [
 	validateSearchUser,
 	(req, res, next) => {
 		const errors = validationResult(req);
-		console.log("Errors: ", errors.array());
-
-		console.log("After validation:");
-		console.log("searchFname:", `"${req.query.searchFname}"`);
-		console.log("searchEmail:", `"${req.query.searchEmail}"`);
 
 		if (!errors.isEmpty()) {
-			return res.status(400).render("createUser", {
+			res.status(400).render("createUser", {
 				title: "create user",
 				errors: errors.array(),
 			});
+			return;
 		}
 		next();
 	},
 	(req, res, next) => {
-		const { searchFname: fName, searchEmail: email } = req.query;
+		const { searchFname: fName, searchEmail: email } = matchedData(req, {
+			locations: ["query"],
+		});
 		const matchedUsers = usersStorage.searchUser({ fName, email });
 		res.render("search", {
 			title: "search result",
